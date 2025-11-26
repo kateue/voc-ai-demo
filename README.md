@@ -2,12 +2,12 @@
 
 Small full‑stack demo that extracts and summarizes customer pain points from text feedback using OpenAI GPT-4o-mini. Users paste feedback into a simple React UI and receive structured JSON insights (summary, pain points with counts, themes, sentiment).
 
-Live demo: https://vocaidemo.netlify.app/
+Live demo: https://vocaidemo.netlify.app
 
 ## Features
 - Paste single or multiple feedback items and get a concise structured output.
-- Backend: Flask calling OpenAI (gpt-4o-mini).
-- Frontend: React + Vite UI that displays results and backend errors.
+- Backend: Flask calling OpenAI (gpt-4o-mini). 
+- Frontend: React + Vite UI that displays results and backend errors. 
 - Health endpoint for quick diagnostics.
 
 ## Repo layout
@@ -52,10 +52,10 @@ Live demo: https://vocaidemo.netlify.app/
    npm run dev
 
 ## Deploy
-- Backend: Render / Heroku / similar
+- Backend: Render
   - Ensure OPENAI_API_KEY is set as an environment variable.
   - Confirm the service can make outbound requests to OpenAI.
-- Frontend: Netlify / Vercel
+- Frontend: Netlify 
   - Set VITE_BACKEND_URL to the backend public URL and redeploy.
 
 ## API
