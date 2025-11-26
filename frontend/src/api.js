@@ -1,5 +1,5 @@
 // frontend/src/api.js
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://your-backend-url.onrender.com";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://voc-ai-demo.onrender.com";
 
 export async function callExtractAPI(text) {
   const res = await fetch(`${BACKEND_URL}/api/extract`, {
