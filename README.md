@@ -75,12 +75,12 @@ Live demo: https://vocaidemo.netlify.app/
 ## Example screenshots
 
 **1) Sample UI input**  
-![Paste feedback into the textarea and click "Extract Pain Points"](/voc-ui.png)  
-Paste one or many customer feedback items and submit. Use the textarea to add raw feedback and click **Extract Pain Points** to run analysis.
+![Paste feedback into the text box and click "Extract Pain Points"](/voc-ui.png)  
+Paste one or many customer feedback items and submit. Use the text box to add raw feedback and click **Extract Pain Points** to run analysis.
 
 **2) Results view (JSON output)**  
 ![Results section showing summary, pain points, themes, and sentiment](/voc-results.png)  
-The app returns a structured JSON-like result:
+The app returns a structured result:
 - **Summary:** concise 1–2 sentence overview  
 - **Pain points:** list of issues with counts (how many times each appears)  
 - **Themes:** comma-separated topics extracted from the text  
