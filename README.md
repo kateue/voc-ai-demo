@@ -73,10 +73,10 @@ Live demo: https://vocaidemo.netlify.app
 - Frontend shows backend messages directly in UI for easier debug.
 
 ## Example screenshots
-
-**1) Sample UI input**  
+**An Amazon Review**  
 ![Here is an amazon review of a product](amazon-review.png)  
 
+**1) Sample UI input**  
 ![Paste feedback into the text box and click "Extract Pain Points"](/voc-ui.png)  
 Paste one or many customer feedback items and submit. Use the text box to add raw feedback and click **Extract Pain Points** to run analysis.
 
