@@ -72,7 +72,24 @@ def extract():
             max_tokens=600,
             temperature=0.0
         )
-        content = resp.choices[0].message.get("content", "").strip()
+
+        # Safely read the message content from the SDK response (object or dict)
+        content = ""
+        try:
+            choice = resp.choices[0]
+            message = getattr(choice, "message", None)
+            if isinstance(message, dict):
+                content = message.get("content", "")
+            else:
+                content = getattr(message, "content", "")
+        except Exception:
+            # final fallback to guard against unexpected shapes
+            try:
+                content = resp.choices[0].get("message", {}).get("content", "")
+            except Exception:
+                content = str(resp)
+
+        content = (content or "").strip()
         import json
         try:
             parsed = json.loads(content)
