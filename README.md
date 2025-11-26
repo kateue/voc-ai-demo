@@ -2,7 +2,7 @@
 
 Small full‑stack demo that extracts and summarizes customer pain points from text feedback using OpenAI GPT-4o-mini. Users paste feedback into a simple React UI and receive structured JSON insights (summary, pain points with counts, themes, sentiment).
 
-Live demo: https://vocaidemo.netlify.app/
+Live demo: https://vocaidemo.netlify.app
 
 ## Features
 - Paste single or multiple feedback items and get a concise structured output.
