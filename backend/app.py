@@ -90,7 +90,11 @@ def extract():
         return jsonify(parsed)
     except Exception as e:
         app.logger.exception("OpenAI request failed")
-        return jsonify({"error": "backend_openai_error", "message": "OpenAI request failed on backend"}), 500
+        # return the actual error message so the frontend shows it (avoid returning secrets)
+        return jsonify({
+            "error": "backend_openai_error",
+            "message": str(e)
+        }), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
