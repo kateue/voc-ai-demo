@@ -1,31 +1,27 @@
 import React, { useState } from "react";
-import { callExtractAPI } from "./api";
+import { extractFeedback } from "./api";
 
 export default function App() {
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!text.trim()) {
-      setError("Paste some customer feedback first.");
-      return;
-    }
+  async function handleSubmit(e) {
+    e?.preventDefault?.();
+    setErrorMessage(null);
     setLoading(true);
     setResult(null);
+
     try {
-      const res = await callExtractAPI(text);
-      setResult(res);
+      const data = await extractFeedback(text);
+      setResult(data);
     } catch (err) {
-      console.error(err);
-      setError("Unexpected error. Try again.");
+      setErrorMessage(err?.message || "Unexpected error. Try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -46,7 +42,11 @@ export default function App() {
         </div>
       </form>
 
-      {error && <div className="error">{error}</div>}
+      {errorMessage && (
+        <div style={{ color: "crimson", marginTop: 12 }}>
+          Error: {errorMessage}
+        </div>
+      )}
 
       {result && (
         <div className="result">

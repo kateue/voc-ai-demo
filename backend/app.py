@@ -7,10 +7,20 @@ from openai import OpenAI
 
 # Initialize
 app = Flask(__name__)
-CORS(app)  # Allow calls from frontend domain; in production add origins list
+CORS(app)
 
-# Use the official OpenAI client (set OPENAI_API_KEY in Render env)
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Validate key at startup (so logs show immediately if missing)
+OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_KEY:
+    app.logger.error("OPENAI_API_KEY is not set in environment. Set this in Render environment variables.")
+    client = None
+else:
+    client = OpenAI(api_key=OPENAI_KEY)
+
+# Add a simple health endpoint for quick checks
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "ok", "openai_key_set": bool(OPENAI_KEY)}), 200
 
 # Prompt template and instructions
 SYSTEM_PROMPT = """
@@ -45,7 +55,13 @@ def extract():
             "sentiment": "mixed"
         })
 
-    # Make a chat completion request to GPT-4o-mini
+    if not OPENAI_KEY or client is None:
+        app.logger.error("Missing OpenAI API key on backend request attempt.")
+        return jsonify({
+            "error": "missing_api_key",
+            "message": "OpenAI API key is not set on the backend. Set OPENAI_API_KEY in Render environment variables."
+        }), 500
+
     try:
         resp = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -56,19 +72,15 @@ def extract():
             max_tokens=600,
             temperature=0.0
         )
-        # The assistant's content should be a JSON string - parse it
         content = resp.choices[0].message.get("content", "").strip()
-        # Attempt to return parsed JSON safely
         import json
         try:
             parsed = json.loads(content)
         except Exception:
-            # If model returns text plus JSON, attempt to find first '{' and parse
             idx = content.find("{")
             if idx != -1:
                 parsed = json.loads(content[idx:])
             else:
-                # fallback minimal structured output
                 parsed = {
                     "summary": content,
                     "pain_points": [],
@@ -77,8 +89,8 @@ def extract():
                 }
         return jsonify(parsed)
     except Exception as e:
-        # For dev visibility; in prod avoid returning full trace
-        return jsonify({"error": str(e)}), 500
+        app.logger.exception("OpenAI request failed")
+        return jsonify({"error": "backend_openai_error", "message": "OpenAI request failed on backend"}), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
